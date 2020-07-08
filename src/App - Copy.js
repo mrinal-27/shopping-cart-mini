@@ -13,16 +13,19 @@ class App extends React.Component {
             products: [
                 { id: 1, name: "PictureFrame", price: 1000, qty: 0 },
                 { id: 2, name: "Lamp", price: 3500, qty: 0 },
-                { id: 3, name: "Rug", price: 4000, qty: 0 },
-                { id: 4, name: "Bedside Table", price: 6000, qty: 0 },
-                { id: 5, name: "Comforter", price: 4500, qty: 0 },
-                { id: 6, name: "Pillows", price: 3250, qty: 0 },
+                { id: 3, name: "Comforter", price: 4000, qty: 0 },
+                { id: 4, name: "Drawer", price: 8000, qty: 0 },
             ],
         };
 
         this.handleIncrement = this.handleIncrement.bind(this);
         this.handleDecrement = this.handleDecrement.bind(this);
         this.pageSwitch = this.pageSwitch.bind(this);
+    }
+
+    pageSwitch(location) {
+        const pageNo = location === "home" ? 0 : 1;
+        this.setState({ pageNo });
     }
 
     handleIncrement(product) {
@@ -39,15 +42,20 @@ class App extends React.Component {
         this.setState(products);
     }
 
-    pageSwitch(loc) {
-        const pageNo = loc === "home" ? 0 : 1;
-        this.setState({ pageNo });
-        console.log("pageSwitch clicked");
-    }
+    // M ki pehli mehnat ki निशानी
+    // handleDecrement(product) {
+    //     const products = [...this.state.products];
+    //     const index = products.indexOf(product);
+    //     if (products[index].qty-- >= 1) this.setState({ products });
+    //     else {
+    //         products.splice(index, 1);
+    //     }
 
     render() {
-        const makeSwitch = () => {
-            switch (this.state.pageNo) {
+        const makeTheSwitch = () => {
+            switch (
+                this.state.pageNo // initially 0
+            ) {
                 case 0:
                     console.log("page 0");
                     return this.state.products.map((product, id) => (
@@ -59,6 +67,7 @@ class App extends React.Component {
                             onAddToCart={this.handleIncrement}
                         />
                     ));
+
                 case 1:
                     console.log("page 1");
                     return (
@@ -68,8 +77,9 @@ class App extends React.Component {
                             onDecrement={this.handleDecrement}
                         />
                     );
+
                 default:
-                    console.log("Page couldn't be displayed");
+                    console.log("Page couldn't change.");
                     break;
             }
         };
@@ -77,9 +87,11 @@ class App extends React.Component {
             <React.Fragment>
                 <Navbar
                     data={this.state.products}
+                    showShoppingCart={this.showShoppingCart}
+                    showHome={this.showHome}
                     pageSwitch={this.pageSwitch}
                 />
-                {makeSwitch()};
+                {makeTheSwitch()}
             </React.Fragment>
         );
     }
